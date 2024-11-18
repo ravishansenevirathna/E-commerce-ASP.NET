@@ -16,5 +16,14 @@ namespace EcommerceApi.Controllers
         public ProductController(ProductContext productContext){
             this.productContext = productContext;
         }
+
+        [HttpPost]
+        public async Task<ActionResult<Product>> SaveProduct(Product product){
+
+            productContext.Add(product);
+            await productContext.SaveChangesAsync();
+
+            return product;
+        }
     }
 }
