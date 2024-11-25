@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/products-api")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -24,6 +24,12 @@ namespace EcommerceApi.Controllers
             await productContext.SaveChangesAsync();
 
             return product;
+        }
+
+        //get product
+        [HttpGet("custom-get-products")]
+        public ActionResult<List<Product>> GetProducts(){
+            return productContext.Products.ToList();
         }
     }
 }
