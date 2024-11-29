@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EcommerceApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceApi.Controllers
 {
@@ -26,10 +27,24 @@ namespace EcommerceApi.Controllers
             return product;
         }
 
-        //get product
+    
         [HttpGet("custom-get-products")]
-        public ActionResult<List<Product>> GetProducts(){
-            return productContext.Products.ToList();
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts(){
+            return await productContext.Products.ToListAsync();
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Product>> GetProductsById(int id){
+            var product = await productContext.Products.FindAsync(id);
+
+            if(product == null){
+                return NotFound();
+            }
+
+            return product;
+
+        }
+
+
     }
 }
