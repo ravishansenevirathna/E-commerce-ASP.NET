@@ -42,7 +42,6 @@ namespace EcommerceApi.Controllers
             }
 
             return product;
-
         }
 
 
