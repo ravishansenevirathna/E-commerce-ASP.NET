@@ -27,6 +27,7 @@ namespace EcommerceApi.Service.Impl
             product.Price = productDto.Price;
             product.Qty = productDto.Qty;
             product.Category = productDto.Category;
+            product.CreatedAt = DateTime.Now;
 
             productContext.Products.Add(product);
             await productContext.SaveChangesAsync();
@@ -54,7 +55,8 @@ namespace EcommerceApi.Service.Impl
                 Name = product.Name,
                 Price = product.Price,
                 Qty = product.Qty,
-                Category = product.Category
+                Category = product.Category,
+                CreatedAt = product.CreatedAt
             }).ToList();
 
             return productDtos;
@@ -69,7 +71,8 @@ namespace EcommerceApi.Service.Impl
                     Name = product.Name,
                     Price = product.Price,
                     Qty = product.Qty,
-                    Category = product.Category
+                    Category = product.Category,
+                    CreatedAt = product.CreatedAt
                 };
         }
 
@@ -101,6 +104,7 @@ namespace EcommerceApi.Service.Impl
             existingProduct.Price = productDto.Price;
             existingProduct.Qty = productDto.Qty;
             existingProduct.Category = productDto.Category;
+            existingProduct.UpdatedAt = DateTime.Now;
 
             productContext.Products.Update(existingProduct);
             await productContext.SaveChangesAsync();
@@ -111,7 +115,9 @@ namespace EcommerceApi.Service.Impl
                 Name = existingProduct.Name,
                 Price = existingProduct.Price,
                 Qty = existingProduct.Qty,
-                Category = existingProduct.Category
+                Category = existingProduct.Category,
+                CreatedAt = existingProduct.CreatedAt,
+                UpdatedAt = existingProduct.UpdatedAt
             };
         }
 
