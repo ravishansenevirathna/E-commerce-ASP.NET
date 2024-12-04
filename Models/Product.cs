@@ -11,10 +11,15 @@ namespace EcommerceApi.Models
         public string Name{get; set;}
         public decimal Price{get; set;}
         public int Qty{get; set;}
-        public string Category{get; set;}
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+
+        public int CategoryId{get; set;}
+
+        public Category Category{get; set; }
+
+
 
     }
 }
