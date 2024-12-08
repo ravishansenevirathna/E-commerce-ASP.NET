@@ -15,10 +15,13 @@ namespace EcommerceApi.Service.Impl
         private readonly ProductContext productContext;
         private readonly EmailSender _emailSender;
 
-        public UserServiceImpl(ProductContext productContext,EmailSender emailSender)
+        private readonly IConfiguration _configuration;
+
+        public UserServiceImpl(ProductContext productContext,EmailSender emailSender, IConfiguration configuration)
         {
             this.productContext = productContext;
             _emailSender = emailSender;
+            _configuration = configuration;
         }
         
         
@@ -27,7 +30,7 @@ namespace EcommerceApi.Service.Impl
             User user = new User();
             user.UserName = userDto.UserName;
             user.Email = userDto.Email;
-            user.Password = userDto.Password;
+            user.Password = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
 
             // Generate OTP
             var otpCode = OtpGenerator.GenerateOtp();
@@ -59,8 +62,21 @@ namespace EcommerceApi.Service.Impl
 
         public async Task<UserDto> ValidateOtp(UserDto userDto)
         {
-            // Fetch the user from the database using the UserId or other unique identifier
-            var user = await productContext.Users.FirstOrDefaultAsync(u => u.Email == userDto.Email && u.Password == userDto.Password);
+            
+            // Find the user by email
+            var user = await productContext.Users.FirstOrDefaultAsync(u => u.Email == userDto.Email && u.UserName == userDto.UserName);
+
+            if (user == null)
+            {
+                throw new Exception("User not found.");
+            }
+
+            // Compare the provided password with the hashed password
+            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(userDto.Password, user.Password);
+            if (!isPasswordValid)
+            {
+                throw new Exception("Invalid password.");
+            }
 
             if (user == null)
             {
@@ -114,19 +130,29 @@ namespace EcommerceApi.Service.Impl
                 throw new Exception("User not found.");
             }
 
-            // Validate the password
-            if (user.Password != userDto.Password)
+            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(userDto.Password, user.Password);
+            if (!isPasswordValid)
             {
-                throw new Exception("Invalid username or password.");
+                throw new Exception("Invalid password.");
             }
+
+            // Generate JWT token
+            // var roles = new List<string>(); // Add roles if you have role-based access
+            var jwtHelper = new JwtHelper(_configuration);
+            var token = jwtHelper.GenerateToken(user.UserName); // Use the correct method name
+
 
             
             return new UserDto
             {
+                Id = user.Id,
                 UserName = user.UserName,
                 Email = user.Email,
-                IsOtpVerified = user.IsOtpVerified
+                IsOtpVerified = user.IsOtpVerified,
+                Token = token
             };
+
+
         }
     
     }

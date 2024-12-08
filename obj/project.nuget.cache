@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "v8Kvr+4XA14=",
+  "dgSpecHash": "tNUC+/zvoYs=",
   "success": true,
   "projectFilePath": "C:\\Users\\Tharindu\\Desktop\\.NET\\EcommerceApi\\EcommerceApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Tharindu\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\Tharindu\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
+    "C:\\Users\\Tharindu\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Tharindu\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Tharindu\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.4\\microsoft.aspnetcore.authentication.jwtbearer.8.0.4.nupkg.sha512",
     "C:\\Users\\Tharindu\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.10\\microsoft.aspnetcore.openapi.8.0.10.nupkg.sha512",

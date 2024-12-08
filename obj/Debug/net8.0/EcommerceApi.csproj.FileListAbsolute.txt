@@ -143,3 +143,4 @@ C:\Users\Tharindu\Desktop\.NET\EcommerceApi\obj\Debug\net8.0\refint\EcommerceApi
 C:\Users\Tharindu\Desktop\.NET\EcommerceApi\obj\Debug\net8.0\EcommerceApi.pdb
 C:\Users\Tharindu\Desktop\.NET\EcommerceApi\obj\Debug\net8.0\EcommerceApi.genruntimeconfig.cache
 C:\Users\Tharindu\Desktop\.NET\EcommerceApi\obj\Debug\net8.0\ref\EcommerceApi.dll
+C:\Users\Tharindu\Desktop\.NET\EcommerceApi\bin\Debug\net8.0\BCrypt.Net-Next.dll

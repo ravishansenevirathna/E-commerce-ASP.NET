@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using EcommerceApi.Dto;
 using EcommerceApi.Models;
 using EcommerceApi.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ namespace EcommerceApi.Controllers
 {
     [Route("api/products-api")]
     [ApiController]
+    [Authorize] // Ensures all endpoints require a valid token
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;

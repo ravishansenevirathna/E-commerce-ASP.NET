@@ -22,23 +22,17 @@ builder.Services.AddScoped<ICategoryService, CategoryServiceImpl>();
 builder.Services.AddScoped<IUserService, UserServiceImpl>();
 builder.Services.AddScoped<EmailSender>();
 
-// Add Authentication using JWT
-var jwtKey = builder.Configuration["Jwt:Key"]; // Fetch the secret key from appsettings.json
-var jwtIssuer = builder.Configuration["Jwt:Issuer"]; // Fetch the issuer from appsettings.json
-var key = Encoding.UTF8.GetBytes(jwtKey);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = jwtIssuer,
-            ValidAudience = jwtIssuer,
-            IssuerSigningKey = new SymmetricSecurityKey(key)
+            ValidateIssuer = false, // Skip Issuer validation
+            ValidateAudience = false, // Optional: Skip Audience validation if not needed
+            ValidateLifetime = true, // Ensure the token has not expired
+            ValidateIssuerSigningKey = true, // Always validate the signing key
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
     });
 

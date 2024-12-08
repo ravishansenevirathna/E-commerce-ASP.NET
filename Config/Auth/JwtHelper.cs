@@ -20,23 +20,20 @@ namespace EcommerceApi.Config.Auth
         _issuer = configuration["Jwt:Issuer"];
     }
 
-    public string GenerateToken(string username, List<string> roles)
+    public string GenerateToken(string username) // Renamed to GenerateToken
     {
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key));
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourVerySecureLongKey1234567890123456"));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        var claims = new List<Claim>
+        var claims = new[]
         {
-            new Claim(ClaimTypes.Name, username)
+            new Claim(JwtRegisteredClaimNames.Sub, username),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
-        roles.ForEach(role => claims.Add(new Claim(ClaimTypes.Role, role)));
-
         var token = new JwtSecurityToken(
-            issuer: _issuer,
-            audience: _issuer,
             claims: claims,
-            expires: DateTime.Now.AddHours(2),
+            expires: DateTime.UtcNow.AddHours(1),
             signingCredentials: credentials
         );
 

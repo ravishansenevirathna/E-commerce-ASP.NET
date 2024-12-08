@@ -17,5 +17,7 @@ namespace EcommerceApi.Dto
         public DateTime OtpExpiry { get; set; }
 
         public bool IsOtpVerified{get; set;}
+
+        public string? Token { get; set; }
     }
 }
