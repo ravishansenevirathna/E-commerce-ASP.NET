@@ -9,7 +9,9 @@ namespace EcommerceApi.Service
     public interface IUserService
     {
         Task<UserDto> SaveUserAsync(UserDto userDto);
-        Task<UserDto> LoginUserAsync(UserDto userDto);
+        Task<UserDto> ValidateOtp(UserDto userDto);
+        Task<UserDto> LoginRequest(UserDto userDto);
+        
 
 
     }

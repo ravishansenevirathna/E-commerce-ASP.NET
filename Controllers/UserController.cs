@@ -30,12 +30,21 @@ namespace EcommerceApi.Controllers
 
     }
 
+    [HttpPost("validate-otp")]
+    public async Task<ActionResult<UserDto>> ValidateOtp(UserDto userDto){
+    
+        var userDto1 = await userService.ValidateOtp(userDto);
+        return CreatedAtAction(nameof(ValidateOtp), new { id = userDto1.Id }, userDto1);
+    
+    }
+
     [HttpPost("login")]
     public async Task<ActionResult<UserDto>> LoginRequest(UserDto userDto){
-    
-        var userDto1 = await userService.LoginUserAsync(userDto);
+    {
+        var userDto1 = await userService.LoginRequest(userDto);
         return CreatedAtAction(nameof(LoginRequest), new { id = userDto1.Id }, userDto1);
-    
+    }
+
     }
 
 }
