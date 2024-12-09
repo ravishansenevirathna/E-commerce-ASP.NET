@@ -1,5 +1,6 @@
 using System.Text;
 using EcommerceApi.Config;
+using EcommerceApi.Config.Auth;
 using EcommerceApi.Models;
 using EcommerceApi.Service;
 using EcommerceApi.Service.Impl;
@@ -21,18 +22,27 @@ builder.Services.AddScoped<IProductService, ProductServiceImpl>();
 builder.Services.AddScoped<ICategoryService, CategoryServiceImpl>();
 builder.Services.AddScoped<IUserService, UserServiceImpl>();
 builder.Services.AddScoped<EmailSender>();
+builder.Services.AddScoped<TokenService>();
+// builder.Services.AddScoped<JwtHelper>();
 
+
+// Add services to the container
+
+var secretKey = builder.Configuration["Jwt:Key"];
+var issuer = builder.Configuration["Jwt:Issuer"];
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = false, // Skip Issuer validation
-            ValidateAudience = false, // Optional: Skip Audience validation if not needed
-            ValidateLifetime = true, // Ensure the token has not expired
-            ValidateIssuerSigningKey = true, // Always validate the signing key
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = issuer,
+            ValidAudience = issuer,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
         };
     });
 
@@ -40,7 +50,6 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Use Authentication and Authorization middleware
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -12,7 +12,6 @@ namespace EcommerceApi.Controllers
 {
     [Route("api/category")]
     [ApiController]
-    [Authorize]
     public class CategoryController: ControllerBase
     {
 
@@ -22,6 +21,7 @@ namespace EcommerceApi.Controllers
         {
             _categoryService = categoryService;
         }
+
 
         [HttpPost("save")]
         public async Task<ActionResult<CategoryWithProductDto>> SaveCategoryWithProduct(CategoryWithProductDto categoryWithProductDto){

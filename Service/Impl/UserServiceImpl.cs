@@ -17,11 +17,14 @@ namespace EcommerceApi.Service.Impl
 
         private readonly IConfiguration _configuration;
 
-        public UserServiceImpl(ProductContext productContext,EmailSender emailSender, IConfiguration configuration)
+        private readonly TokenService _tokenService;
+
+        public UserServiceImpl(ProductContext productContext,EmailSender emailSender, IConfiguration configuration,TokenService tokenService)
         {
             this.productContext = productContext;
             _emailSender = emailSender;
             _configuration = configuration;
+            _tokenService = tokenService;
         }
         
         
@@ -138,8 +141,10 @@ namespace EcommerceApi.Service.Impl
 
             // Generate JWT token
             // var roles = new List<string>(); // Add roles if you have role-based access
-            var jwtHelper = new JwtHelper(_configuration);
-            var token = jwtHelper.GenerateToken(user.UserName); // Use the correct method name
+            // var jwtHelper = new JwtHelper(_configuration);
+            // var token = jwtHelper.GenerateToken(user.UserName); // Use the correct method name
+            string userName = userDto.UserName;
+            var token = _tokenService.GenerateToken(userName);
 
 
             
