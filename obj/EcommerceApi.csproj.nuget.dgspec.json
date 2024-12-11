@@ -71,9 +71,9 @@
               "target": "Package",
               "version": "[8.0.10, )"
             },
-            "Microsoft.IdentityModel.Tokens": {
+            "Microsoft.IdentityModel.JsonWebTokens": {
               "target": "Package",
-              "version": "[8.3.0, )"
+              "version": "[8.2.1, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

@@ -9,7 +9,7 @@ namespace EcommerceApi.Service
 {
     public interface IProductService
     {
-         Task<ProductDto> SaveProductAsync(ProductDto productDto);
+         Task<ProductDto> SaveProductAsync(ProductDto productDto,IFormFile image);
          Task<IEnumerable<ProductDto>> GetAllProductsAsync();
          Task<ProductDto> GetProductById(int Id);
 

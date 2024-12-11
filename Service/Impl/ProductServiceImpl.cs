@@ -20,13 +20,35 @@ namespace EcommerceApi.Service.Impl
         }
 
 
-        public async Task<ProductDto> SaveProductAsync(ProductDto productDto)
+        public async Task<ProductDto> SaveProductAsync(ProductDto productDto,IFormFile image)
         {
+            // Save the image to the uploads folder
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+            if (!Directory.Exists(uploadsFolder))
+            {
+                Directory.CreateDirectory(uploadsFolder);
+            }
+
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+            var filePath = Path.Combine(uploadsFolder, fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await image.CopyToAsync(stream);
+            }
+
+            // Set the image path in the DTO
+            productDto.ImagePath = $"uploads/{fileName}";
+
+
+
             Product product = new Product();
             product.Name = productDto.Name;
             product.Price = productDto.Price;
             product.Qty = productDto.Qty;
             product.CreatedAt = DateTime.Now;
+            product.CategoryId = productDto.CategoryId;
+            product.ImagePath = productDto.ImagePath;
 
             productContext.Products.Add(product);
             await productContext.SaveChangesAsync();
@@ -37,6 +59,7 @@ namespace EcommerceApi.Service.Impl
                 Name = product.Name,
                 Price = product.Price,
                 Qty = product.Qty,
+                ImagePath = product.ImagePath
         
             };
 
@@ -47,6 +70,7 @@ namespace EcommerceApi.Service.Impl
         {
             List<Product> products = await productContext.Products.ToListAsync();
 
+            string baseUrl = "http://localhost:5018/"; 
             
             List<ProductDto> productDtos = products.Select(product => new ProductDto
             {
@@ -55,7 +79,9 @@ namespace EcommerceApi.Service.Impl
                 Price = product.Price,
                 Qty = product.Qty,
             
-                CreatedAt = product.CreatedAt
+                CreatedAt = product.CreatedAt,
+                ImagePath = !string.IsNullOrEmpty(product.ImagePath) ? baseUrl + product.ImagePath : null
+
             }).ToList();
 
             return productDtos;
@@ -63,6 +89,9 @@ namespace EcommerceApi.Service.Impl
 
         public async Task<ProductDto> GetProductById(int productId)
         {
+
+            string baseUrl = "http://localhost:5018/"; 
+
             var product = await productContext.Products.FindAsync(productId);
             return product == null ? null : new ProductDto
                 {
@@ -70,7 +99,8 @@ namespace EcommerceApi.Service.Impl
                     Name = product.Name,
                     Price = product.Price,
                     Qty = product.Qty,
-                    CreatedAt = product.CreatedAt
+                    CreatedAt = product.CreatedAt,
+                    ImagePath = !string.IsNullOrEmpty(product.ImagePath) ? baseUrl + product.ImagePath : null
                 };
         }
 

@@ -14,7 +14,7 @@ namespace EcommerceApi.Controllers
 {
     [Route("api/products-api")]
     [ApiController]
-    [Authorize] // Ensures all endpoints require a valid token
+    [Authorize]
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -26,16 +26,19 @@ namespace EcommerceApi.Controllers
 
 
         [HttpPost("save")]
-        public async Task<ActionResult<ProductDto>> SaveProduct(ProductDto productDto){
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult<ProductDto>> SaveProduct([FromForm] ProductDto productDto, [FromForm] IFormFile image){
 
-            if (productDto == null)
+            Console.WriteLine("hhhhhh");
+
+            if (productDto == null || image == null)
             {
-                return BadRequest("Product cannot be null.");
+                return BadRequest("Product details and image cannot be null.");
             }
 
             try
             {
-                var savedProduct = await _productService.SaveProductAsync(productDto);
+                var savedProduct = await _productService.SaveProductAsync(productDto,image);
                 return CreatedAtAction(nameof(SaveProduct), new { id = savedProduct.Id }, savedProduct);
             }
             catch (Exception ex)

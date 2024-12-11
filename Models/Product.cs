@@ -15,11 +15,13 @@ namespace EcommerceApi.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-    // forign key
+        // forign key
         public int? CategoryId{get; set;}
 
         // relationship define -- this column is used only for relationship so there is no any column in the Product table
         public Category Category{get; set; }
+
+        public string ImagePath { get; set; }
 
 
 
