@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceApi.Controllers
 {
-    [Route("api/category")]
+    [Route("api/categoryz")]
     [ApiController]
     [Authorize]
     public class CategoryController: ControllerBase
