@@ -11,6 +11,10 @@ namespace EcommerceApi.Models
         public ProductContext(DbContextOptions<ProductContext> options) : base(options){}
         public DbSet<Product> Products{get; set;}
 
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderProduct> OrderProducts { get; set; }
+
+
         public DbSet<Category> Categories{get; set;}
 
         public DbSet<User> Users{get; set;}
@@ -23,6 +27,20 @@ namespace EcommerceApi.Models
                 .WithOne(p => p.Category)
                 .HasForeignKey(p => p.CategoryId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+                   modelBuilder.Entity<OrderProduct>()
+                .HasKey(op => new { op.OrderId, op.ProductId }); // Composite key
+
+            modelBuilder.Entity<OrderProduct>()
+                .HasOne(op => op.Order)
+                .WithMany(o => o.OrderProducts)
+                .HasForeignKey(op => op.OrderId);
+
+            modelBuilder.Entity<OrderProduct>()
+                .HasOne(op => op.Product)
+                .WithMany(p => p.OrderProducts)
+                .HasForeignKey(op => op.ProductId);
+             
         }
     }
 }

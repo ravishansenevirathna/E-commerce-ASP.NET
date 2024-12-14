@@ -23,6 +23,12 @@ namespace EcommerceApi.Models
 
         public string ImagePath { get; set; }
 
+        public ICollection<OrderProduct> OrderProducts { get; set; }
+
+        
+
+
+
 
 
     }

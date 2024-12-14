@@ -24,6 +24,8 @@ builder.Services.AddScoped<ICategoryService, CategoryServiceImpl>();
 builder.Services.AddScoped<IUserService, UserServiceImpl>();
 builder.Services.AddScoped<EmailSender>();
 builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<IOrderService, OrderServiceImpl>();
+builder.Services.AddScoped<IPaymentService, PaymentServiceImpl>();
 
 
 // Add services to the container
