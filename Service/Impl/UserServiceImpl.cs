@@ -35,7 +35,6 @@ namespace EcommerceApi.Service.Impl
             user.Email = userDto.Email;
             user.Password = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
 
-            // Generate OTP
             var otpCode = OtpGenerator.GenerateOtp();
             var otpExpiry = DateTime.Now;
 
@@ -43,15 +42,11 @@ namespace EcommerceApi.Service.Impl
             user.OtpExpiry = otpExpiry;
             user.IsOtpVerified = false;
 
-            // Send OTP email to the user
             await _emailSender.SendOtpEmailAsync(userDto.Email, otpCode);
 
-
-            // Save user to the database
             await productContext.Users.AddAsync(user);
             await productContext.SaveChangesAsync();
 
-            // Return the user data as a DTO
             return new UserDto
             {
                 UserName = user.UserName,
@@ -66,7 +61,6 @@ namespace EcommerceApi.Service.Impl
         public async Task<UserDto> ValidateOtp(UserDto userDto)
         {
             
-            // Find the user by email
             var user = await productContext.Users.FirstOrDefaultAsync(u => u.Email == userDto.Email && u.UserName == userDto.UserName);
 
             if (user == null)
@@ -74,7 +68,6 @@ namespace EcommerceApi.Service.Impl
                 throw new Exception("User not found.");
             }
 
-            // Compare the provided password with the hashed password
             bool isPasswordValid = BCrypt.Net.BCrypt.Verify(userDto.Password, user.Password);
             if (!isPasswordValid)
             {
@@ -86,7 +79,6 @@ namespace EcommerceApi.Service.Impl
                 throw new Exception("User not found.");
             }
 
-            // Check if the OTP matches
             if (user.OtpCode != userDto.OtpCode)
             {
                 throw new Exception("Invalid OTP.");
@@ -94,7 +86,6 @@ namespace EcommerceApi.Service.Impl
 
           TimeSpan timeDifference = DateTime.Now - user.OtpExpiry;
 
-            // Check if the OTP was created more than 5 minutes ago
             if (timeDifference.TotalMinutes < 6)
             {
                 throw new Exception("OTP has expired.");
@@ -102,11 +93,9 @@ namespace EcommerceApi.Service.Impl
 
             user.IsOtpVerified = true;
 
-            // Save the changes to the database
             productContext.Users.Update(user);
             await productContext.SaveChangesAsync();
 
-            // Return the updated UserDto
             return new UserDto
             {
                 Id = user.Id,
@@ -119,13 +108,11 @@ namespace EcommerceApi.Service.Impl
         
       public async Task<UserDto> LoginRequest(UserDto userDto)
         {
-            // Check if OTP verification is complete
             if (!userDto.IsOtpVerified)
             {
                 throw new UnauthorizedAccessException("Unauthorized user. OTP verification required.");
             }
 
-            // Find the user in the database by username or email
             var user = await productContext.Users.FirstOrDefaultAsync(u => u.UserName == userDto.UserName && u.Email == userDto.Email);
 
             if (user == null)

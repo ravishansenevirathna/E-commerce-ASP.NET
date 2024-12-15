@@ -20,6 +20,8 @@ namespace EcommerceApi.Models
 
         public ICollection<OrderProduct> OrderProducts { get; set; }
 
+         public ICollection<Payment> Payments { get; set; }
+
 
     }
 }
