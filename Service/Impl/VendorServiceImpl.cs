@@ -76,5 +76,27 @@ namespace EcommerceApi.Service.Impl
 
             return $"VEN{newIdNumber:D9}";
         }
+
+            public async Task<IEnumerable<VendorDto>> GetAllVendorsAsync()
+        {
+            List<Vendor> vendors = await productContext.Vendors.ToListAsync();
+            
+            List<VendorDto> vendorDtos = vendors.Select(Vendor => new VendorDto
+            {
+                Venodr_u_id = Vendor.Venodr_u_id,
+                Owner_Name = Vendor.Owner_Name,
+                Business_Name = Vendor.Business_Name,
+                Business_Address = Vendor.Business_Address,
+                Bank_Account= Vendor.Bank_Account,
+                Email = Vendor.Email,
+                Nic = Vendor.Nic,
+                Mobile = Vendor.Mobile,
+                Admin_Approved = Vendor.Admin_Approved,
+                
+
+            }).ToList();
+
+            return vendorDtos;
+        }
     }
 }

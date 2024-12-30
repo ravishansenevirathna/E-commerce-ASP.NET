@@ -17,6 +17,8 @@ namespace EcommerceApi.Dto
 
         public string Address{get; set;}
 
+        public string? QRCode{get; set;}
+
         public DateTime OrderDate{get; set;}
 
         public ICollection<OrderProduct> OrderProducts { get; set; }

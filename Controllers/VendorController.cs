@@ -40,5 +40,11 @@ namespace EcommerceApi.Controllers
             }
 
         }
+
+        [HttpGet("getAll")]
+        public async Task<ActionResult<IEnumerable<VendorDto>>> GetVendors(){
+            var vendors = await vendorService.GetAllVendorsAsync();
+            return Ok(vendors);
+        }
     }
 }

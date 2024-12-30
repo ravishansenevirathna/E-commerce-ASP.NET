@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EcommerceApi.Dto;
 using EcommerceApi.Models;
+using QRCoder;
 
 namespace EcommerceApi.Service.Impl
 {
@@ -46,6 +47,9 @@ namespace EcommerceApi.Service.Impl
            
             await productContext.SaveChangesAsync();
 
+            string qrContent = $"OrderId: {order.Id}, Amount: {order.Amount}, UserId: {order.UserId}";
+            string qrCodeBase64 = GenerateQRCode(qrContent);
+
             OrderDto savedOrderDto = new OrderDto
             {
                 UserId = order.UserId,
@@ -53,6 +57,7 @@ namespace EcommerceApi.Service.Impl
                 Status = order.Status,
                 Address = order.Address,
                 OrderDate = order.OrderDate,
+                QRCode = qrCodeBase64,
                 Products = order.OrderProducts.Select(op => new ProductDto
                 {
                     Id = op.ProductId,  
@@ -65,7 +70,20 @@ namespace EcommerceApi.Service.Impl
             return savedOrderDto;
         }
 
+        
 
+            private string GenerateQRCode(string content)
+        {
+            using (var qrGenerator = new QRCoder.QRCodeGenerator())
+            {
+                // Generate the QR code data
+                var qrCodeData = qrGenerator.CreateQrCode(content, QRCoder.QRCodeGenerator.ECCLevel.Q);
+
+                // Use Base64QRCode to directly get the Base64-encoded string
+                var base64QRCode = new QRCoder.Base64QRCode(qrCodeData);
+                return base64QRCode.GetGraphic(20);
+            }
+        }
    
 
 

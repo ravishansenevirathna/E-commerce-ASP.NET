@@ -9,5 +9,7 @@ namespace EcommerceApi.Service
     public interface IVendorService
     {
         Task<VendorDto> SaveVendorAsync(VendorDto vendorDto);
+
+        Task<IEnumerable<VendorDto>> GetAllVendorsAsync();
     }
 }
