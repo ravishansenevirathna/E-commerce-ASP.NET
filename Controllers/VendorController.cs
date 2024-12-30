@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EcommerceApi.Dto;
 using EcommerceApi.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,5 +20,25 @@ namespace EcommerceApi.Controllers
     {
         this.vendorService = vendorService;
     }  
+
+         [HttpPost("save")]
+        public async Task<ActionResult<VendorDto>> SaveVendor(VendorDto vendorDto){
+
+            if (vendorDto == null)
+            {
+                return BadRequest("Vendor cannot be null.");
+            }
+
+            try
+            {
+                var savedVendor = await vendorService.SaveVendorAsync(vendorDto);
+                return CreatedAtAction(nameof(SaveVendor), new { id = savedVendor.Id }, savedVendor);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+
+        }
     }
 }

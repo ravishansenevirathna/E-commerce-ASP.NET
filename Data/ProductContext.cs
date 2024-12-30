@@ -21,6 +21,8 @@ namespace EcommerceApi.Models
 
         public DbSet<Payment> Payments { get; set; }
 
+        public DbSet<Vendor> Vendors { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

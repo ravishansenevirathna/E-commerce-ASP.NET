@@ -26,6 +26,7 @@ builder.Services.AddScoped<EmailSender>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<IOrderService, OrderServiceImpl>();
 builder.Services.AddScoped<IPaymentService, PaymentServiceImpl>();
+builder.Services.AddScoped<IVendorService, VendorServiceImpl>();
 
 
 // Add services to the container

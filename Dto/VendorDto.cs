@@ -22,9 +22,6 @@ namespace EcommerceApi.Dto
         public string Email{get; set;}
         public string Nic{get; set;}
         public string Mobile{get; set;}
-        public DateTime Requested_Time { get; set; }
-
-        public DateTime Approved_Time { get; set; }
 
         public int Admin_Approved{get; set;}
     }
