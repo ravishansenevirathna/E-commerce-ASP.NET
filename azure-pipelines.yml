@@ -1,0 +1,28 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  # Replace this with your Azure Container Registry name
+  ACR_NAME: acr-test
+
+steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: sdk
+    version: 8.0.x
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
+- task: DockerInstaller@0
+  inputs:
+    dockerVersion: 'latest'
+
+- script: |
+    docker login $(ACR_NAME).azurecr.io -u $(ACR_USERNAME) -p $(ACR_PASSWORD)
+    docker build -t $(ACR_NAME).azurecr.io/ecommerceapi:$(Build.BuildId) .
+    docker push $(ACR_NAME).azurecr.io/ecommerceapi:$(Build.BuildId)
+  displayName: Build and Push Docker Image
