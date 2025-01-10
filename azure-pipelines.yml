@@ -7,7 +7,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  # Replace this with your Azure Container Registry name
+  
   ACR_NAME: acr-test
 
 steps:
