@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EcommerceApi.Dto;
 using EcommerceApi.Models;
+using Microsoft.EntityFrameworkCore;
 using QRCoder;
 
 namespace EcommerceApi.Service.Impl
@@ -83,6 +84,27 @@ namespace EcommerceApi.Service.Impl
                 var base64QRCode = new QRCoder.Base64QRCode(qrCodeData);
                 return base64QRCode.GetGraphic(20);
             }
+        }
+
+          public async Task<IEnumerable<OrderDto>> GetAllOrdersAsync()
+        {
+            List<Order> orders = await productContext.Orders.ToListAsync();
+
+            
+            List<OrderDto> orderDtos = orders.Select(order => new OrderDto
+            {
+                Id = order.Id,
+                UserId = order.UserId,
+                Amount = order.Amount,
+                Status = order.Status,
+                Address = order.Address,
+                OrderDate = order.OrderDate,
+                OrderProducts = order.OrderProducts,
+                
+
+            }).ToList();
+
+            return orderDtos;
         }
    
 

@@ -10,5 +10,7 @@ namespace EcommerceApi.Service
     {
         
          Task<OrderDto> SaveOrderAsync(OrderDto orderDto);
+         
+         Task<IEnumerable<OrderDto>> GetAllOrdersAsync();
     }
 }

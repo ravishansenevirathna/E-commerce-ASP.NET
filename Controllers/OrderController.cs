@@ -42,6 +42,14 @@ namespace EcommerceApi.Controllers
 
         }
 
+        [HttpGet("getAll")]
+        public async Task<ActionResult<IEnumerable<OrderDto>>> GetAllOrders(){
+
+            var orders = await _orderService.GetAllOrdersAsync();
+            return Ok(orders);
+
+        }
+
 
 
     }
