@@ -77,7 +77,6 @@ namespace EcommerceApi.Service.Impl
         {
             using (var qrGenerator = new QRCoder.QRCodeGenerator())
             {
-                // Generate the QR code data
                 var qrCodeData = qrGenerator.CreateQrCode(content, QRCoder.QRCodeGenerator.ECCLevel.Q);
 
                 // Use Base64QRCode to directly get the Base64-encoded string
